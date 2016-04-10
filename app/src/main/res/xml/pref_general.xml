@@ -1,0 +1,74 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="test"
+        android:title="@string/demo_message"
+        android:summary="@string/demo_message_summary" />
+
+    <PreferenceCategory
+        android:title="@string/location">
+        <CheckBoxPreference
+            android:key="use_gps"
+            android:defaultValue="true"
+            android:title="@string/use_gps"
+            android:summary="@string/use_gps_summary" />
+
+        <ListPreference
+            android:key="gps_timeout"
+            android:defaultValue="30"
+            android:entries="@array/timeouts"
+            android:entryValues="@array/timeout_values"
+            android:title="@string/gps_timeout"
+            android:summary="" />
+
+        <ListPreference
+            android:key="location_timeout"
+            android:defaultValue="15"
+            android:entries="@array/timeouts"
+            android:entryValues="@array/timeout_values"
+            android:title="@string/location_timeout"
+            android:summary="" />
+
+        <CheckBoxPreference
+            android:key="use_remove_network_location"
+            android:defaultValue="false"
+            android:title="@string/use_remove_network_location"
+            android:summary="@string/use_remove_network_location_summary" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/message_formatting">
+
+        <CheckBoxPreference
+            android:key="write_source"
+            android:defaultValue="true"
+            android:title="@string/write_source"
+            android:summary="@string/write_source_summary" />
+
+        <CheckBoxPreference
+            android:key="write_time"
+            android:defaultValue="true"
+            android:title="@string/write_time"
+            android:summary="@string/write_time_summary" />
+
+        <CheckBoxPreference
+            android:key="write_accuracy"
+            android:defaultValue="true"
+            android:title="@string/write_accuracy"
+            android:summary="@string/write_accuracy_summary" />
+
+        <CheckBoxPreference
+            android:key="write_movement"
+            android:defaultValue="false"
+            android:title="@string/write_movement"
+            android:summary="@string/write_movement_summary" />
+
+        <CheckBoxPreference
+            android:key="write_altitude"
+            android:defaultValue="false"
+            android:title="@string/write_altitude"
+            android:summary="@string/write_altitude_summary" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

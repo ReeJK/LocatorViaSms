@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="timeouts">
+        <item>5 секунд</item>
+        <item>10 секунд</item>
+        <item>15 секунд</item>
+        <item>20 секунд</item>
+        <item>25 секунд</item>
+        <item>30 секунд</item>
+        <item>40 секунд</item>
+        <item>50 секунд</item>
+        <item>1 минута</item>
+        <item>1 минута 15 секунд</item>
+        <item>1 минута 30 секунд</item>
+        <item>1 минута 45 секунд</item>
+        <item>2 минуты</item>
+        <item>2 минуты 30 секунд</item>
+        <item>3 минуты</item>
+        <item>3 минуты 30 секунд</item>
+        <item>4 минуты</item>
+        <item>4 минуты 30 секунд</item>
+        <item>5 минут</item>
+        <item>10 минут</item>
+    </string-array>
+</resources>

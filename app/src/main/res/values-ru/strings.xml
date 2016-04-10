@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gps_timeout">Продолжительность поиска GPS</string>
+    <string name="location_timeout">Продолжительность поиска местоположения</string>
+    <string name="phone_dialog_message">Введите номер, который сможет получать ваше местоположение:</string>
+    <string name="phone_dialog_title">Номер телефона</string>
+    <string name="phones">Номера</string>
+    <string name="phones_description">Номера телефонов, которые могут получить ваше местоположение</string>
+    <string name="phrase_dialog_message">Введите текст СМС который будет активировать приложение:</string>
+    <string name="phrase_dialog_title">Текст СМС</string>
+    <string name="phrases">Фразы</string>
+    <string name="phrases_description">СМС, которые будут активировать приложение</string>
+    <string name="settings">Настройки</string>
+    <string name="use_gps">Использовать GPS</string>
+    <string name="use_gps_summary">Более точное определение местоположения</string>
+    <string name="delete">Удалить</string>
+    <string name="grant">Разрешить</string>
+    <string name="location_permissions">Определение местоположения</string>
+    <string name="location_permission_message">Для работы приложения нужно разрешение на определение местоположения</string>
+    <string name="sms_no_permissions">Нет разрешения</string>
+    <string name="sms_location_not_found">Неудалось определить местоположение</string>
+    <string name="demo_message">Пример сообщения</string>
+    <string name="demo_message_summary">Показывает сообщение которое сейчас можно составить</string>
+    <string name="demo_last_location">Получаем последнее местоположение...</string>
+    <string name="demo_wait_gps">Ждём GPS...</string>
+    <string name="demo_wait_location">Ждём местоположение по сетям...</string>
+    <string name="via_network">через сети</string>
+    <string name="location_accuracy_format" formatted="false">точность: %dм</string>
+    <string name="few_days_ago">получено несколько дней назад</string>
+    <string name="day_ago">получено день назад</string>
+    <string name="location_movement_format" formatted="false">движется по %d на %dм/с</string>
+    <string name="some_ago_format" formatted="false">получено %d:%02d назад</string>
+    <string name="location_altitude_format" formatted="false">высота: %dm</string>
+    <string name="via_gps">через GPS</string>
+    <string name="message_formatting">Форматирование сообщений</string>
+    <string name="share">Поделиться</string>
+    <string name="write_accuracy">Писать точность</string>
+    <string name="write_accuracy_summary">Точность местоположения в метрах</string>
+    <string name="write_movement">Писать движение</string>
+    <string name="write_movement_summary">Направление движения в градусах и скорость в метрах/секунду</string>
+    <string name="write_source">Писать источник</string>
+    <string name="write_source_summary">через GPS или через сети</string>
+    <string name="write_time">Писать время</string>
+    <string name="write_time_summary">Как давно получено местоположение</string>
+    <string name="location">Местоположение</string>
+    <string name="write_altitude">Писать высоту</string>
+    <string name="write_altitude_summary">Высота в метрах если доступно</string>
+    <string name="use_remove_network_location">Использовать удалённый поиск по сетям</string>
+    <string name="use_remove_network_location_summary">Местоположение без включенной геолокации, определяется на принимающем устройстве</string>
+</resources>

@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name" translatable="false">Locator via SMS</string>
+    <string name="title_activity_main" translatable="false">Locator via SMS</string>
+    <string name="settings">Settings</string>
+    <string name="phones">Phones</string>
+    <string name="phrases">Phrases</string>
+
+    <string name="use_gps">Use GPS</string>
+    <string name="use_gps_summary">More accurate positioning</string>
+    <string name="gps_timeout">GPS search duration</string>
+    <string name="location_timeout">Location search duration</string>
+    <string name="use_remove_network_location">Use remove network location</string>
+    <string name="use_remove_network_location_summary">Location w/o enabled geolocation, spots on receiver</string>
+
+    <string name="phones_description">Phones who can get your location</string>
+    <string name="phone_dialog_title">Phone</string>
+    <string name="phone_dialog_message">Enter the phone that can get your location:</string>
+
+    <string name="phrases_description">SMS that will activate the application</string>
+    <string name="phrase_dialog_title">Message text</string>
+    <string name="phrase_dialog_message">Enter the SMS text that will activate the app:</string>
+    <string name="delete">Delete</string>
+    <string name="location_permissions">Location permission</string>
+    <string name="location_permission_message">For the application need permission for positioning</string>
+    <string name="grant">Grant</string>
+    <string name="sms_no_permissions">No permissions</string>
+    <string name="sms_location_not_found">Unable to locate position</string>
+    <string name="demo_message">Demo message</string>
+    <string name="demo_message_summary">Displays a message that is now can be formed</string>
+    <string name="demo_wait_gps">Waiting for GPS...</string>
+    <string name="demo_wait_location">Wating for network location...</string>
+    <string name="demo_last_location">Receiving last location...</string>
+    <string name="via_gps">via GPS</string>
+    <string name="via_network">via network</string>
+    <string name="location_accuracy_format" formatted="false">accuracy: %dm</string>
+    <string name="location_movement_format" formatted="false">moves to %d by %dm/s</string>
+    <string name="location_altitude_format" formatted="false">altitude: %dm</string>
+    <string name="few_days_ago">received a few days ago</string>
+    <string name="day_ago">received a day ago</string>
+    <string name="some_ago_format" formatted="false">received %d:%02d ago</string>
+    <string name="share">Share</string>
+    <string name="message_formatting">Message formatting</string>
+    <string name="write_source">Write source</string>
+    <string name="write_source_summary">via GPS or via network</string>
+    <string name="write_time">Write receive time</string>
+    <string name="write_time_summary">How long has obtained location</string>
+    <string name="write_accuracy">Write accuracy</string>
+    <string name="write_accuracy_summary">Location accuracy in meters</string>
+    <string name="write_movement">Write movement</string>
+    <string name="write_movement_summary">Movement direction in degress and speed in meters per second</string>
+    <string name="write_altitude">Write altitude</string>
+    <string name="write_altitude_summary">Height in meters if available</string>
+
+    <string name="location">Location</string>
+
+</resources>
