@@ -14,6 +14,8 @@ import android.util.Log;
 import java.util.ArrayList;
 
 public class SmsLocationReceiver extends Service {
+    private int _requests = 0;
+
     public SmsLocationReceiver() {
     }
 
@@ -27,27 +29,28 @@ public class SmsLocationReceiver extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         String from = intent.getStringExtra("from");
         new SmsLocationSender(this, from).requestLocation();
-        return START_STICKY;
+        return START_REDELIVER_INTENT;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i("sms", "create");
+        Log.i("sms-loc", "create");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.i("sms", "destroy");
+        Log.i("sms-loc", "destroy");
     }
 
     class SmsLocationSender extends LocationSender {
         private final String _address;
 
-        public SmsLocationSender(Context context, String address) {
-            super(context);
+        public SmsLocationSender(Service service, String address) {
+            super(service);
             _address = address;
+            _requests++;
         }
 
         @Override
@@ -61,7 +64,10 @@ public class SmsLocationReceiver extends Service {
             }
 
             PreferenceManager.getDefaultSharedPreferences(SmsLocationReceiver.this).edit().putString("lastAddr", _address).commit();
-            stopSelf();
+
+            _requests--;
+            if(_requests == 0)
+                stopSelf();
         }
     }
 }

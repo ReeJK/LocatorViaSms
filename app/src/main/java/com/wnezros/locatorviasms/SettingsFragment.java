@@ -1,5 +1,6 @@
 package com.wnezros.locatorviasms;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,6 +12,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceFragmentCompat;
+import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import java.util.Arrays;
@@ -78,21 +81,24 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         @Override
         protected void sendMessage(final String message) {
+            try {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(_context);
+                dialog.setTitle(R.string.demo_message);
+                dialog.setMessage(message);
+                dialog.setNeutralButton(R.string.share, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.putExtra(Intent.EXTRA_TEXT, message);
+                        intent.setType("text/plain");
+                        startActivity(intent);
+                    }
+                });
 
-            AlertDialog.Builder dialog = new AlertDialog.Builder(_context);
-            dialog.setTitle(R.string.demo_message);
-            dialog.setMessage(message);
-            dialog.setNeutralButton(R.string.share, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    Intent intent = new Intent(Intent.ACTION_SEND);
-                    intent.putExtra(Intent.EXTRA_TEXT, message);
-                    intent.setType("text/plain");
-                    startActivity(intent);
-                }
-            });
-
-            dialog.show();
+                dialog.show();
+            } catch (RuntimeException e) {
+                Log.e("sms-demo", e.getMessage());
+            }
         }
 
         @Override

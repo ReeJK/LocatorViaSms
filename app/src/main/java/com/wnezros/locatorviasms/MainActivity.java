@@ -48,6 +48,12 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(_viewPager);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestPermissions();
+    }
+
     private void requestPermissions() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
