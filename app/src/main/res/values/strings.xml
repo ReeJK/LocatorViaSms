@@ -9,7 +9,7 @@
     <string name="use_gps_summary">More accurate positioning</string>
     <string name="gps_timeout">GPS search duration</string>
     <string name="location_timeout">Location search duration</string>
-    <string name="use_remove_network_location">Use remove network location</string>
+    <string name="use_remove_network_location">Use remote network location</string>
     <string name="use_remove_network_location_summary">Location w/o enabled geolocation, spots on receiver</string>
 
     <string name="phones_description">Phones who can get your location</string>

@@ -118,9 +118,11 @@ public class PhonesFragment extends ListWithPlusFragment {
                 c = getContext().getContentResolver().query(uri, new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER}, null, null, null);
                 if (c != null && c.moveToFirst()) {
                     String number = c.getString(0);
-                    if(_numberReceiveListener != null)
+                    if (_numberReceiveListener != null)
                         _numberReceiveListener.onReceiveNumber(number);
                 }
+            } catch (SecurityException e) {
+
             } finally {
                 if (c != null) {
                     c.close();
