@@ -3,7 +3,6 @@ package com.wnezros.locatorviasms;
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -15,10 +14,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.telephony.PhoneNumberUtils;
-import android.telephony.SmsManager;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,9 +50,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION }, 1);
+        ArrayList<String> permissionsToRequest = new ArrayList<>();
+        permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        permissionsToRequest.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        permissionsToRequest.add(Manifest.permission.RECEIVE_SMS);
+        permissionsToRequest.add(Manifest.permission.SEND_SMS);
+
+        for(int i = permissionsToRequest.size() - 1; i >= 0; i--) {
+            if (ContextCompat.checkSelfPermission(this, permissionsToRequest.get(i)) == PackageManager.PERMISSION_GRANTED)
+                permissionsToRequest.remove(i);
+        }
+
+        if (permissionsToRequest.size() > 0) {
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toArray(new String[0]), 1);
             return;
         }
     }
@@ -93,15 +98,24 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private boolean allPermissionsGranted(int[] grantResults) {
+        for(int result : grantResults) {
+            if(result != PackageManager.PERMISSION_GRANTED)
+                return false;
+        }
+
+        return true;
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, int[] grantResults) {
         if(requestCode == 1) {
-            if(grantResults.length == 0 || grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED)
+            if(allPermissionsGranted(grantResults))
                 return;
 
             AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-            dialog.setTitle(R.string.location_permissions);
-            dialog.setMessage(R.string.location_permission_message);
+            dialog.setTitle(R.string.dialog_permissions_title);
+            dialog.setMessage(R.string.dialog_permissions_message);
             dialog.setPositiveButton(R.string.grant, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {

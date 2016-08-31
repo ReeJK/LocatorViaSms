@@ -20,8 +20,8 @@
     <string name="phrase_dialog_title">Message text</string>
     <string name="phrase_dialog_message">Enter the SMS text that will activate the app:</string>
     <string name="delete">Delete</string>
-    <string name="location_permissions">Location permission</string>
-    <string name="location_permission_message">For the application need permission for positioning</string>
+    <string name="dialog_permissions_title">Permissions</string>
+    <string name="dialog_permissions_message">This application needs permissions for location and SMS.</string>
     <string name="grant">Grant</string>
     <string name="sms_no_permissions">No permissions</string>
     <string name="sms_location_not_found">Unable to locate position</string>

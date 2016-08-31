@@ -15,8 +15,8 @@
     <string name="use_gps_summary">Более точное определение местоположения</string>
     <string name="delete">Удалить</string>
     <string name="grant">Разрешить</string>
-    <string name="location_permissions">Определение местоположения</string>
-    <string name="location_permission_message">Для работы приложения нужно разрешение на определение местоположения</string>
+    <string name="dialog_permissions_title">Разрешения</string>
+    <string name="dialog_permissions_message">Для работы приложения нужны разрешения на определение местоположения и СМС.</string>
     <string name="sms_no_permissions">Нет разрешения</string>
     <string name="sms_location_not_found">Неудалось определить местоположение</string>
     <string name="demo_message">Пример сообщения</string>
