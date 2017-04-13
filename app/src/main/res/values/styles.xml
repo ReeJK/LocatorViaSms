@@ -10,6 +10,16 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.v14.Material</item>
     </style>
 
+    <style name="AppTheme.Dark" parent="AppTheme">
+        <item name="colorButtonNormal">@color/colorDark</item>
+        <item name="android:textColor">@color/colorDarkText</item>
+    </style>
+
+    <style name="AppTheme.Light" parent="AppTheme">
+        <item name="colorButtonNormal">@color/colorLight</item>
+        <item name="android:textColor">@color/colorLightText</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

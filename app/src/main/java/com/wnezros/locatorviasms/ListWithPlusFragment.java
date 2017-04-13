@@ -16,11 +16,16 @@ public abstract class ListWithPlusFragment extends Fragment {
 
     protected ArrayAdapter<String> _adapter;
     protected ListView _listView;
-    private TextView _headerView;
+    protected TextView _headerView;
+
+    protected int getLayoutId()
+    {
+        return R.layout.fragment_list_with_plus;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_list_with_plus, container, false);
+        View view = inflater.inflate(getLayoutId(), container, false);
 
         _headerView = (TextView) view.findViewById(R.id.description);
 

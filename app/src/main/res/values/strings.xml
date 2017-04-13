@@ -9,12 +9,14 @@
     <string name="use_gps_summary">More accurate positioning</string>
     <string name="gps_timeout">GPS search duration</string>
     <string name="location_timeout">Location search duration</string>
-    <string name="use_remove_network_location">Use remote network location</string>
-    <string name="use_remove_network_location_summary">Location w/o enabled geolocation, spots on receiver</string>
+    <string name="use_remote_network_location">Use remote network location</string>
+    <string name="use_remote_network_location_summary">Location w/o enable geolocation. Encodes data about networks around and send it. This data will be decoded on receiver.</string>
 
-    <string name="phones_description">Phones who can get your location</string>
+    <string name="phones_description_white">Phones that can receive your location</string>
+    <string name="phones_description_black">Phones that can not receive your location</string>
     <string name="phone_dialog_title">Phone</string>
-    <string name="phone_dialog_message">Enter the phone that can get your location:</string>
+    <string name="phone_dialog_message_white">Enter the phone that can request  your location:</string>
+    <string name="phone_dialog_message_black">Enter the phone that can not request your location:</string>
 
     <string name="phrases_description">SMS that will activate the application</string>
     <string name="phrase_dialog_title">Message text</string>
@@ -52,5 +54,7 @@
     <string name="write_altitude_summary">Height in meters if available</string>
 
     <string name="location">Location</string>
+    <string name="blacklist">To blacklist</string>
+    <string name="whitelist">To whitelist</string>
 
 </resources>

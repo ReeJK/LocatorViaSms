@@ -9,6 +9,8 @@ import android.provider.Telephony;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsMessage;
 
+import java.util.Set;
+
 public class SmsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -75,13 +77,15 @@ public class SmsReceiver extends BroadcastReceiver {
     }
 
     private boolean isAllowedPhone(SharedPreferences prefs, String address) {
+        boolean isBlacklist = Settings.getIsPhonesBlacklist(prefs);
+
         String[] phones = Settings.getPhones(prefs);
         for (String phone : phones) {
             if (isSamePhone(phone, address))
-                return true;
+                return !isBlacklist;
         }
 
-        return false;
+        return !isBlacklist;
     }
 
     private boolean isSamePhone(String a, String b) {

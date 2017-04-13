@@ -13,6 +13,7 @@ public final class Settings {
     private static final String gpsTimeout = "gps_timeout";
     private static final String locationTimeout = "location_timeout";
 
+    private static final String phonesBlacklist = "phonesBlacklist";
     private static final String phones = "phones";
     private static final String phrases = "phrases";
 
@@ -34,6 +35,16 @@ public final class Settings {
 
     public static int getLocationTimeout(SharedPreferences preferences) {
         return Integer.parseInt(preferences.getString(locationTimeout, "30"));
+    }
+
+    public static boolean getIsPhonesBlacklist(SharedPreferences preferences) {
+        return preferences.getBoolean(phonesBlacklist, false);
+    }
+
+    public static void setIsPhonesBlacklist(SharedPreferences preferences, boolean isBlacklist) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(phonesBlacklist, isBlacklist);
+        editor.commit();
     }
 
     public static String[] getPhones(SharedPreferences preferences) {

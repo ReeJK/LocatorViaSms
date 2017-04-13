@@ -2,10 +2,10 @@
 <resources>
     <string name="gps_timeout">Продолжительность поиска GPS</string>
     <string name="location_timeout">Продолжительность поиска местоположения</string>
-    <string name="phone_dialog_message">Введите номер, который сможет получать ваше местоположение:</string>
+    <string name="phone_dialog_message_white">Введите номер, который сможет получать ваше местоположение:</string>
     <string name="phone_dialog_title">Номер телефона</string>
     <string name="phones">Номера</string>
-    <string name="phones_description">Номера телефонов, которые могут получить ваше местоположение</string>
+    <string name="phones_description_white">Номера телефонов, которые могут получить ваше местоположение</string>
     <string name="phrase_dialog_message">Введите текст СМС который будет активировать приложение:</string>
     <string name="phrase_dialog_title">Текст СМС</string>
     <string name="phrases">Фразы</string>
@@ -45,6 +45,10 @@
     <string name="location">Местоположение</string>
     <string name="write_altitude">Писать высоту</string>
     <string name="write_altitude_summary">Высота в метрах если доступно</string>
-    <string name="use_remove_network_location">Использовать удалённый поиск по сетям</string>
-    <string name="use_remove_network_location_summary">Местоположение без включенной геолокации, определяется на принимающем устройстве</string>
+    <string name="use_remote_network_location">Использовать удалённый поиск по сетям</string>
+    <string name="use_remote_network_location_summary">Местоположение без включенной геолокации. Данные о сетях кодируются и отправляются. Расшифровываются на принимающем устройстве.</string>
+    <string name="phone_dialog_message_black">Введите номер, который не сможет получать ваше местоположение:</string>
+    <string name="phones_description_black">Номера телефонов, которые не могут получить ваше местоположение</string>
+    <string name="blacklist">Чёрный список</string>
+    <string name="whitelist">Белый список</string>
 </resources>

@@ -32,8 +32,8 @@
         <CheckBoxPreference
             android:key="use_remove_network_location"
             android:defaultValue="false"
-            android:title="@string/use_remove_network_location"
-            android:summary="@string/use_remove_network_location_summary" />
+            android:title="@string/use_remote_network_location"
+            android:summary="@string/use_remote_network_location_summary" />
     </PreferenceCategory>
 
     <PreferenceCategory
