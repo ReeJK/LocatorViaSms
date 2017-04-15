@@ -22,6 +22,7 @@ public abstract class ListWithPlusFragment extends Fragment {
     {
         return R.layout.fragment_list_with_plus;
     }
+    protected ArrayAdapter<String> createAdapter() { return new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1); }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -29,7 +30,7 @@ public abstract class ListWithPlusFragment extends Fragment {
 
         _headerView = (TextView) view.findViewById(R.id.description);
 
-        _adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1);
+        _adapter = createAdapter();
 
         _listView = (ListView) view.findViewById(R.id.list);
         _listView.setAdapter(_adapter);

@@ -39,8 +39,7 @@ public abstract class LocationSender {
 
         if(!requestGpsLocation(locationManager, prefs))
             if(!requestNetworkLocation(locationManager, prefs))
-                if(!sendCellsMessage(prefs))
-                    requestLastLocation(locationManager, prefs);
+                requestLastLocation(locationManager, prefs);
     }
 
     protected boolean requestGpsLocation(final LocationManager locationManager, final SharedPreferences prefs) throws SecurityException {
@@ -99,10 +98,16 @@ public abstract class LocationSender {
             type = LocationType.Network;
         }
 
-        if(location == null)
+        if (location != null) {
+            long ms = location.getTime();
+            long secondsDiff = (new Date().getTime() - ms) / 1000;
+            if(secondsDiff < 60*60) {
+                sendMessage(type, location);
+                return;
+            }
+        }
+        if (!sendCellsMessage(prefs))
             sendMessage(R.string.sms_location_not_found);
-        else
-            sendMessage(type, location);
     }
 
     private void sendMessage(int resId) {
