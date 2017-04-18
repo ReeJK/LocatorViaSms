@@ -18,6 +18,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
@@ -38,7 +39,7 @@ public class PhonesFragment extends ListWithPlusFragment {
 
     @Override
     protected int getLayoutId() {
-        return R.layout.fragment_list_with_plus_checkbox;
+        return R.layout.fragment_phones_list;
     }
 
     @Override
@@ -76,6 +77,17 @@ public class PhonesFragment extends ListWithPlusFragment {
             }
         });
 
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
+            view.findViewById(R.id.grant_panel).setVisibility(View.GONE);
+        } else {
+            ((Button)view.findViewById(R.id.grant_panel)).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    checkAndRequestPermissions(3);
+                }
+            });
+        }
+
         setTheme(view, Settings.getIsPhonesBlacklist(prefs));
         return view;
     }
@@ -85,11 +97,11 @@ public class PhonesFragment extends ListWithPlusFragment {
         setDescription(isDark ? R.string.phones_description_black : R.string.phones_description_white);
 
         String[] oldItems = _adapter.toArray(new String[0]);
-        _listView.setBackgroundResource(isDark ? R.color.colorDark : R.color.colorLight);
         _adapter = createAdapter();
         _adapter.addAll(oldItems);
         _listView.setAdapter(_adapter);
 
+        rootView.setBackgroundResource(isDark ? R.color.colorDark : R.color.colorLight);
         _listView.setDivider(new ColorDrawable(getContext().getResources().getColor(isDark ? R.color.dividerDark : R.color.dividerLight)));
         _listView.setDividerHeight(1);
 
@@ -116,7 +128,7 @@ public class PhonesFragment extends ListWithPlusFragment {
         pickContactButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkAndRequestPermissions()) {
+                if(checkAndRequestPermissions(2)) {
                     requestContact();
                 }
             }
@@ -154,9 +166,9 @@ public class PhonesFragment extends ListWithPlusFragment {
         startActivityForResult(intent, 1);
     }
 
-    private boolean checkAndRequestPermissions() {
+    private boolean checkAndRequestPermissions(int code) {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[] { Manifest.permission.READ_CONTACTS }, 2);
+            requestPermissions(new String[] { Manifest.permission.READ_CONTACTS }, code);
             return false;
         }
         return true;
@@ -164,11 +176,20 @@ public class PhonesFragment extends ListWithPlusFragment {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 2) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                requestContact();
-            }
+        if (grantResults.length < 1 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            return;
         }
+
+        switch (requestCode) {
+            case 2:
+                requestContact();
+                break;
+            case 3:
+                getView().findViewById(R.id.grant_panel).setVisibility(View.GONE);
+                break;
+        }
+
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 

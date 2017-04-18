@@ -31,8 +31,15 @@ public class PhonesAdapter extends ArrayAdapter<String> {
         Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(number));
         String name = number;
 
-        ContentResolver contentResolver = getContext().getContentResolver();
-        Cursor contactLookup = contentResolver.query(uri, new String[] { ContactsContract.PhoneLookup.DISPLAY_NAME }, null, null, null);
+        Cursor contactLookup;
+        try {
+            ContentResolver contentResolver = getContext().getContentResolver();
+            contactLookup = contentResolver.query(uri, new String[]{ContactsContract.PhoneLookup.DISPLAY_NAME}, null, null, null);
+        } catch (IllegalArgumentException e) {
+            return name;
+        } catch (SecurityException e) {
+            return name;
+        }
 
         try {
             if (contactLookup != null && contactLookup.getCount() > 0) {

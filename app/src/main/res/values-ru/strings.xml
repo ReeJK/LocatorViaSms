@@ -51,4 +51,5 @@
     <string name="phones_description_black">Номера телефонов, которые не могут получить ваше местоположение</string>
     <string name="blacklist">Чёрный список</string>
     <string name="whitelist">Белый список</string>
+    <string name="grant_access_to_read_contacts">Разрешить читать контакты</string>
 </resources>

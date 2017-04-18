@@ -56,5 +56,6 @@
     <string name="location">Location</string>
     <string name="blacklist">To blacklist</string>
     <string name="whitelist">To whitelist</string>
+    <string name="grant_access_to_read_contacts">Grant access to read contacts</string>
 
 </resources>

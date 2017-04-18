@@ -4,16 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@+id/top_panel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:background="@color/colorAccent">
-
             <FrameLayout
                 android:id="@+id/change_to"
                 android:layout_width="wrap_content"
@@ -32,7 +32,6 @@
                     android:text="@string/whitelist"
                     android:theme="@style/AppTheme.Light" />
             </FrameLayout>
-
             <TextView
                 android:id="@+id/description"
                 android:layout_width="match_parent"
@@ -47,21 +46,31 @@
                 android:textColor="@color/colorAccentText" />
         </RelativeLayout>
 
-        <ListView
-            android:id="@+id/list"
+        <Button
+            android:id="@+id/grant_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="@string/grant_access_to_read_contacts" />
+
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="none" />
-
-    </LinearLayout>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/plus"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginBottom="5dp"
-        android:layout_marginRight="5dp"
-        android:src="@drawable/ic_add" />
-
+            android:layout_below="@id/top_panel"
+            android:layout_above="@id/grant_panel">
+            <ListView
+                android:id="@+id/list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none" />
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/ic_add" />
+        </FrameLayout>
+    </RelativeLayout>
 </FrameLayout>
