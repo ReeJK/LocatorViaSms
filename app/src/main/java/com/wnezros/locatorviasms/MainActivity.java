@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (permissionsToRequest.size() > 0) {
-            ActivityCompat.requestPermissions(this, permissionsToRequest.toArray(new String[0]), 1);
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toArray(new String[0]), RequestCodes.BASE_PERMISSIONS);
             return;
         }
     }
@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, int[] grantResults) {
-        if(requestCode == 1) {
+        if(requestCode == RequestCodes.BASE_PERMISSIONS) {
             if(allPermissionsGranted(grantResults))
                 return;
 

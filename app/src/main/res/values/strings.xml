@@ -37,6 +37,7 @@
     <string name="location_accuracy_format" formatted="false">accuracy: %dm</string>
     <string name="location_movement_format" formatted="false">moves to %d by %dm/s</string>
     <string name="location_altitude_format" formatted="false">altitude: %dm</string>
+    <string name="location_battery_level_format" formatted="false">battery: %d%%</string>
     <string name="few_days_ago">received a few days ago</string>
     <string name="day_ago">received a day ago</string>
     <string name="some_ago_format" formatted="false">received %d:%02d ago</string>
@@ -52,10 +53,33 @@
     <string name="write_movement_summary">Movement direction in degress and speed in meters per second</string>
     <string name="write_altitude">Write altitude</string>
     <string name="write_altitude_summary">Height in meters if available</string>
+    <string name="write_battery_level">Write battery level</string>
+    <string name="write_battery_level_summary">Percentage of battery charge level</string>
 
     <string name="location">Location</string>
     <string name="blacklist">To blacklist</string>
     <string name="whitelist">To whitelist</string>
     <string name="grant_access_to_read_contacts">Grant access to read contacts</string>
+
+    <string name="broadcast">Location broadcast</string>
+    <string name="broadcast_enabled">Location broadcast is enabled</string>
+    <string name="broadcast_next" formatted="false">Next in %d:%02d</string>
+    <string name="broadcast_start">Start</string>
+    <string name="broadcast_stop">Stop</string>
+    <string name="broadcast_interval">Interval</string>
+    <string name="broadcast_interval_summary" formatted="false">Every %s</string>
+    <string name="broadcast_comment">Comment</string>
+    <string name="broadcast_phones">Phones</string>
+    <string name="phone_dialog_message_broadcast">Enter the phone number to which your location will be sent:</string>
+
+    <plurals name="hours">
+        <item quantity="one">%1$d hour</item>
+        <item quantity="other">%1$d hours</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">%1$d minute</item>
+        <item quantity="other">%1$d minutes</item>
+    </plurals>
 
 </resources>

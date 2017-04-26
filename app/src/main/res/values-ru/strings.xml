@@ -52,4 +52,32 @@
     <string name="blacklist">Чёрный список</string>
     <string name="whitelist">Белый список</string>
     <string name="grant_access_to_read_contacts">Разрешить читать контакты</string>
+    <string name="broadcast">Рассылка местоположения</string>
+
+    <plurals name="hours">
+        <item quantity="one">%1$d час</item>
+        <item quantity="few">%1$d часа</item>
+        <item quantity="many">%1$d часов</item>
+        <item quantity="other">%1$d часов</item>
+    </plurals>
+
+    <plurals name="minutes">
+        <item quantity="one">%1$d минута</item>
+        <item quantity="few">%1$d минуты</item>
+        <item quantity="many">%1$d минут</item>
+        <item quantity="other">%1$d минут</item>
+    </plurals>
+
+    <string name="write_battery_level">Писать заряд аккумулятора</string>
+    <string name="write_battery_level_summary">Процент заряда аккумулятора</string>
+    <string name="location_battery_level_format" formatted="false">барарея: %d%%</string>
+    <string name="broadcast_enabled">Рассылка местоположения включена</string>
+    <string name="broadcast_next" formatted="false">Следующее в %d:%02d</string>
+    <string name="broadcast_start">Включить</string>
+    <string name="broadcast_stop">Отключить</string>
+    <string name="broadcast_comment">Комментарий</string>
+    <string name="broadcast_interval">Интервал</string>
+    <string name="broadcast_interval_summary" formatted="false">Каждые %s</string>
+    <string name="broadcast_phones">Телефоны</string>
+    <string name="phone_dialog_message_broadcast">Введите номер на который будет отправлено ваше местоположение:</string>
 </resources>

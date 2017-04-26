@@ -2,11 +2,14 @@ package com.wnezros.locatorviasms;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -19,7 +22,7 @@ public abstract class LocationSender {
     protected final Context _context;
     private final Handler _handler = new Handler();
 
-    public LocationSender(Context context) {
+    protected LocationSender(Context context) {
         if(context == null)
             throw new IllegalArgumentException("context is null");
         _context = context;
@@ -120,15 +123,17 @@ public abstract class LocationSender {
             return false;
 
         OfflineNetworkLocation onl = new OfflineNetworkLocation(_context);
-        sendMessage("http://wnezros.com/g.htm#" + onl.getEncodedData());
+        String message = "http://wnezros.com/g.htm#" + onl.getEncodedData();
+
+        Settings.MessageFormatting formatting = Settings.getMessageFormatting(PreferenceManager.getDefaultSharedPreferences(_context));
+        message = appendBatteryLevel(message, formatting);
+
+        sendMessage(message);
         return true;
     }
 
     private void sendMessage(LocationType type, Location location) {
-        String message;
-
-        String geo = String.format(Locale.ENGLISH, "http://maps.google.com/?q=%f,%f", location.getLatitude(), location.getLongitude());
-        message = geo;
+        String message = String.format(Locale.ENGLISH, "http://maps.google.com/?q=%f,%f", location.getLatitude(), location.getLongitude());
 
         Settings.MessageFormatting formatting = Settings.getMessageFormatting(PreferenceManager.getDefaultSharedPreferences(_context));
         if(formatting.writeAltitude && location.hasAltitude()) {
@@ -165,7 +170,40 @@ public abstract class LocationSender {
             message = join(message, "\n", movement);
         }
 
+        message = appendBatteryLevel(message, formatting);
         sendMessage(message);
+    }
+
+    private String appendBatteryLevel(String message, Settings.MessageFormatting formatting) {
+        if(formatting.writeBatteryLevel) {
+            Integer[] level = getBatteryLevel();
+            if (level == null) {
+                return message;
+            }
+
+            String battery = String.format(_context.getString(R.string.location_battery_level_format), level[0]);
+            if(level[1] != 0)
+                battery += "+";
+
+            message = join(message, "\n", battery);
+        }
+        return message;
+    }
+
+    private Integer[] getBatteryLevel() {
+        Intent batteryIntent = _context.getApplicationContext().registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        if (batteryIntent == null) {
+            return null;
+        }
+
+        int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
+        int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
+        int plugged = batteryIntent.getIntExtra(BatteryManager.EXTRA_PLUGGED, 1);
+        if(level == -1 || scale == -1) {
+            return null;
+        }
+
+        return new Integer[] { level * 100 / scale, plugged };
     }
 
     private static String join(String a, String b, String c) {

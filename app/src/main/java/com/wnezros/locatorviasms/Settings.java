@@ -13,12 +13,21 @@ public final class Settings {
     private static final String gpsTimeout = "gps_timeout";
     private static final String locationTimeout = "location_timeout";
 
-    private static final String phonesBlacklist = "phonesBlacklist";
+    @Deprecated
+    private static final String phonesBlacklistOld = "phonesBlacklist"; // TODO remove
+
+    private static final String phonesBlacklist = "phones_blacklist";
     private static final String phones = "phones";
     private static final String phrases = "phrases";
 
+    private static final String broadcastPhones = "broadcast_phones";
+    private static final String broadcastComment = "broadcast_comment";
+    private static final String broadcastInterval = "broadcast_interval";
+
+
     public static void initialize(Context context) {
         PreferenceManager.setDefaultValues(context, R.xml.pref_general, false);
+        PreferenceManager.setDefaultValues(context, R.xml.pref_broadcast, false);
     }
 
     public static boolean getUseGps(SharedPreferences preferences) {
@@ -38,13 +47,7 @@ public final class Settings {
     }
 
     public static boolean getIsPhonesBlacklist(SharedPreferences preferences) {
-        return preferences.getBoolean(phonesBlacklist, false);
-    }
-
-    public static void setIsPhonesBlacklist(SharedPreferences preferences, boolean isBlacklist) {
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean(phonesBlacklist, isBlacklist);
-        editor.commit();
+        return preferences.getBoolean(phonesBlacklist, preferences.getBoolean(phonesBlacklistOld, false));
     }
 
     public static String[] getPhones(SharedPreferences preferences) {
@@ -59,21 +62,53 @@ public final class Settings {
         return new MessageFormatting(preferences);
     }
 
+    public static String[] getBroadcastPhones(SharedPreferences preferences) {
+        return getStringArray(preferences, broadcastPhones);
+    }
+
+    public static String getBroadcastComment(SharedPreferences preferences) {
+        return preferences.getString(broadcastComment, "");
+    }
+
+    public static long getBroadcastInterval(SharedPreferences preferences) {
+        return preferences.getInt(broadcastInterval, 10) * 60 * 1000;
+    }
+
     public static void setPhones(SharedPreferences preferences, String[] value) {
         SharedPreferences.Editor editor = preferences.edit();
         putStringArray(editor, phones, value);
-        editor.commit();
+        editor.apply();
     }
 
     public static void setPhrases(SharedPreferences preferences, String[] value) {
         SharedPreferences.Editor editor = preferences.edit();
         putStringArray(editor, phrases, value);
-        editor.commit();
+        editor.apply();
+    }
+
+    public static void setIsPhonesBlacklist(SharedPreferences preferences, boolean value) {
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(phonesBlacklist, value);
+        editor.apply();
+    }
+
+    public static void setBroadcastPhones(SharedPreferences preferences, String[] value) {
+        SharedPreferences.Editor editor = preferences.edit();
+        putStringArray(editor, broadcastPhones, value);
+        editor.apply();
     }
 
     private static String[] getStringArray(SharedPreferences prefs, String name) {
+        return toStringArray(prefs.getString(name, "[]"));
+    }
+
+    private static void putStringArray(SharedPreferences.Editor prefs, String name, String[] value) {
+        prefs.putString(name, fromStringArray(value));
+    }
+
+    public static String[] toStringArray(String value) {
         try {
-            JSONArray json = new JSONArray(prefs.getString(name, "[]"));
+            JSONArray json = new JSONArray(value);
             String[] result = new String[json.length()];
             for(int i = 0; i < result.length; i++)
                 result[i] = json.getString(i);
@@ -83,11 +118,11 @@ public final class Settings {
         }
     }
 
-    private static void putStringArray(SharedPreferences.Editor prefs, String name, String[] value) {
+    public static String fromStringArray(String[] value) {
         JSONArray json = new JSONArray();
         for (String s: value)
             json.put(s);
-        prefs.putString(name, json.toString());
+        return json.toString();
     }
 
     public static class MessageFormatting {
@@ -97,12 +132,14 @@ public final class Settings {
         private static final String writeAccuracyKey = "write_accuracy";
         private static final String writeMovementKey = "write_movement";
         private static final String writeAltitudeKey = "write_altitude";
+        private static final String writeBatteryLevelKey = "write_battery_level";
 
         public final boolean writeSource;
         public final boolean writeTime;
         public final boolean writeAccuracy;
         public final boolean writeMovement;
         public final boolean writeAltitude;
+        public final boolean writeBatteryLevel;
 
         public MessageFormatting(SharedPreferences preferences) {
             writeSource = preferences.getBoolean(writeSourceKey, true);
@@ -110,6 +147,7 @@ public final class Settings {
             writeAccuracy = preferences.getBoolean(writeAccuracyKey, true);
             writeMovement = preferences.getBoolean(writeMovementKey, false);
             writeAltitude = preferences.getBoolean(writeAltitudeKey, false);
+            writeBatteryLevel = preferences.getBoolean(writeBatteryLevelKey, false);
         }
     }
 }

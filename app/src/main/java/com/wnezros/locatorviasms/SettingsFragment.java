@@ -1,24 +1,19 @@
 package com.wnezros.locatorviasms;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
-import android.support.v7.preference.PreferenceFragmentCompat;
 import android.util.Log;
-import android.view.WindowManager;
 import android.widget.Toast;
 
-import java.util.Arrays;
+import com.wnezros.locatorviasms.Broadcast.SettingsActivity;
 
-public class SettingsFragment extends PreferenceFragmentCompat {
+public class SettingsFragment extends BasePreferenceFragment {
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -44,35 +39,15 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 return false;
             }
         });
-    }
 
-    @Override
-    public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
-
-    }
-
-    private static void bindPreferenceSummaryToValue(Preference preference) {
-        preference.setOnPreferenceChangeListener(_bindPreferenceSummaryToValueListener);
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
-        String value = preferences.getString(preference.getKey(), "");
-        _bindPreferenceSummaryToValueListener.onPreferenceChange(preference, value);
-    }
-
-    private static Preference.OnPreferenceChangeListener _bindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
-        @Override
-        public boolean onPreferenceChange(Preference preference, Object value) {
-            if(preference instanceof ListPreference){
-                ListPreference list = (ListPreference) preference;
-                int index = Arrays.asList(list.getEntryValues()).indexOf(value);
-                list.setSummary(list.getEntries()[index]);
-            } else {
-                preference.setSummary(String.valueOf(value));
+        findPreference("broadcast").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                startActivity(new Intent(getContext(), SettingsActivity.class));
+                return false;
             }
-
-            return true;
-        }
-    };
+        });
+    }
 
     private class DemoLocationSender extends LocationSender {
         public DemoLocationSender(Context context) {

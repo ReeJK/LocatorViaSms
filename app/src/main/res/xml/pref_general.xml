@@ -5,6 +5,10 @@
         android:title="@string/demo_message"
         android:summary="@string/demo_message_summary" />
 
+    <Preference
+        android:key="broadcast"
+        android:title="@string/broadcast" />
+
     <PreferenceCategory
         android:title="@string/location">
         <CheckBoxPreference
@@ -68,6 +72,12 @@
             android:defaultValue="false"
             android:title="@string/write_altitude"
             android:summary="@string/write_altitude_summary" />
+
+        <CheckBoxPreference
+            android:key="write_battery_level"
+            android:defaultValue="false"
+            android:title="@string/write_battery_level"
+            android:summary="@string/write_battery_level_summary" />
 
     </PreferenceCategory>
 

@@ -76,5 +76,9 @@ public abstract class ListWithPlusFragment extends Fragment {
     }
 
     protected abstract void onPlusClick();
-    protected abstract void onRemoveItem(int index);
+
+    protected void onRemoveItem(int index)
+    {
+        _adapter.removeAt(index);
+    }
 }

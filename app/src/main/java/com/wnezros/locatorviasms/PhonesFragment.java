@@ -1,40 +1,45 @@
 package com.wnezros.locatorviasms;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
+import android.widget.TextView;
 
-public class PhonesFragment extends ListWithPlusFragment {
 
-    public PhonesFragment() {
+public class PhonesFragment extends ListWithPlusFragment implements ContactsUtils.OnNumberReceiveListener {
+    private static final int CONTACT_REQUEST_CODE = 1;
+
+    class PhonesAdapter extends ArrayAdapter<String> {
+        public PhonesAdapter(Context context, boolean isDark) {
+            super(context, isDark ? R.layout.dark_phone_item : R.layout.light_phone_item, android.R.id.text1);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View view = super.getView(position, convertView, parent);
+
+            TextView text2 = (TextView)view.findViewById(android.R.id.text2);
+            text2.setText(ContactsUtils.getContactDisplayNameByNumber(getContext(), getItem(position)));
+
+            return view;
+        }
     }
+
+    private ContactsUtils.DialogBuilder _dialog;
 
     @SuppressWarnings("unused")
     public static PhonesFragment newInstance() {
         return new PhonesFragment();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -52,6 +57,8 @@ public class PhonesFragment extends ListWithPlusFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
+
+        ContactsUtils.checkGrantPanel(view, this);
 
         Context context = getContext();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -77,23 +84,11 @@ public class PhonesFragment extends ListWithPlusFragment {
             }
         });
 
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_GRANTED) {
-            view.findViewById(R.id.grant_panel).setVisibility(View.GONE);
-        } else {
-            ((Button)view.findViewById(R.id.grant_panel)).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    checkAndRequestPermissions(3);
-                }
-            });
-        }
-
         setTheme(view, Settings.getIsPhonesBlacklist(prefs));
         return view;
     }
 
-    private void setTheme(View rootView, boolean isDark)
-    {
+    private void setTheme(View rootView, boolean isDark) {
         setDescription(isDark ? R.string.phones_description_black : R.string.phones_description_white);
 
         String[] oldItems = _adapter.toArray(new String[0]);
@@ -109,69 +104,34 @@ public class PhonesFragment extends ListWithPlusFragment {
         rootView.findViewById(R.id.change_to_black).setVisibility(isDark ? View.GONE : View.VISIBLE);
     }
 
-    private void save() {
+    @Override
+    public void onReceiveNumber(String number) {
+        _adapter.add(number);
+        save();
+    }
+
+    protected void save() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         Settings.setPhones(prefs, _adapter.toArray(new String[0]));
     }
 
     @Override
     protected void onPlusClick() {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-        dialog.setTitle(R.string.phone_dialog_title);
-        dialog.setMessage(R.string.phone_dialog_message_white);
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        boolean isDark = Settings.getIsPhonesBlacklist(prefs);
 
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.enter_phone, null);
-        dialog.setView(view);
-
-        final EditText phoneText = (EditText) view.findViewById(R.id.phone);
-        final ImageButton pickContactButton = (ImageButton) view.findViewById(R.id.pick_phone);
-        pickContactButton.setOnClickListener(new View.OnClickListener() {
+        _dialog = new ContactsUtils.DialogBuilder(this);
+        _dialog.setMessage(isDark ? R.string.phone_dialog_message_black : R.string.phone_dialog_message_white);
+        _dialog.setPhoneNumberRequestCode(CONTACT_REQUEST_CODE);
+        _dialog.setResultListener(this);
+        _dialog.setOnCloseListener(new ContactsUtils.OnDialogCloseListener() {
             @Override
-            public void onClick(View view) {
-                if(checkAndRequestPermissions(2)) {
-                    requestContact();
-                }
+            public void onClose() {
+                ContactsUtils.checkGrantPanel(getView(), PhonesFragment.this);
+                _dialog = null;
             }
         });
-
-        _numberReceiveListener = new OnNumberReceiveListener() {
-            @Override
-            public void onReceiveNumber(String number) {
-                phoneText.setText(number);
-            }
-        };
-
-        dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                _adapter.add(phoneText.getText().toString());
-                save();
-                _numberReceiveListener = null;
-            }
-        });
-
-        dialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                _numberReceiveListener = null;
-            }
-        });
-
-        dialog.show();
-    }
-
-    private void requestContact() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE);
-        startActivityForResult(intent, 1);
-    }
-
-    private boolean checkAndRequestPermissions(int code) {
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[] { Manifest.permission.READ_CONTACTS }, code);
-            return false;
-        }
-        return true;
+        _dialog.show();
     }
 
     @Override
@@ -182,10 +142,10 @@ public class PhonesFragment extends ListWithPlusFragment {
         }
 
         switch (requestCode) {
-            case 2:
-                requestContact();
+            case RequestCodes.CONTACT:
+                ContactsUtils.requestPhoneNumber(this, CONTACT_REQUEST_CODE);
                 break;
-            case 3:
+            case RequestCodes.GRANT:
                 getView().findViewById(R.id.grant_panel).setVisibility(View.GONE);
                 break;
         }
@@ -195,7 +155,7 @@ public class PhonesFragment extends ListWithPlusFragment {
 
     @Override
     protected void onRemoveItem(int index) {
-        _adapter.removeAt(index);
+        super.onRemoveItem(index);
         save();
     }
 
@@ -204,31 +164,6 @@ public class PhonesFragment extends ListWithPlusFragment {
         if (requestCode != 1 || data == null)
             return;
 
-        Uri uri = data.getData();
-
-        if (uri != null) {
-            Cursor c = null;
-            try {
-                c = getContext().getContentResolver().query(uri, new String[]{ContactsContract.CommonDataKinds.Phone.NUMBER}, null, null, null);
-                if (c != null && c.moveToFirst()) {
-                    String number = c.getString(0);
-                    if (_numberReceiveListener != null)
-                        _numberReceiveListener.onReceiveNumber(number);
-                }
-            } catch (SecurityException e) {
-
-            } finally {
-                if (c != null) {
-                    c.close();
-                }
-            }
-
-        }
-    }
-
-    private OnNumberReceiveListener _numberReceiveListener;
-
-    private interface OnNumberReceiveListener {
-        void onReceiveNumber(String number);
+        ContactsUtils.receivePhoneNumber(getContext(), data, _dialog);
     }
 }

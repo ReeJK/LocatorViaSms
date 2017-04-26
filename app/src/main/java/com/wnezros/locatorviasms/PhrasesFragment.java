@@ -78,7 +78,7 @@ public class PhrasesFragment extends ListWithPlusFragment {
 
     @Override
     protected void onRemoveItem(int index) {
-        _adapter.removeAt(index);
+        super.onRemoveItem(index);
         save();
     }
 

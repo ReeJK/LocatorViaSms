@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="broadcast_toggle"
+        android:title="@string/broadcast_start" />
+
+    <com.wnezros.locatorviasms.TimePreference
+        android:key="broadcast_interval"
+        android:title="@string/broadcast_interval"
+        android:summary="@string/broadcast_interval_summary" />
+    <EditTextPreference
+        android:key="broadcast_comment"
+        android:defaultValue=""
+        android:title="@string/broadcast_comment" />
+
+    <PreferenceCategory
+        android:fragment="com.wnezros.locatorviasms.PhonesFragment"
+        android:title="@string/broadcast_phones"/>
+
+</PreferenceScreen>
