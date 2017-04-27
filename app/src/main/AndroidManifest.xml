@@ -18,7 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Light">
         <receiver
-            android:name=".SmsReceiver"
+            android:name=".SmsRequestReceiver"
             android:permission="android.permission.BROADCAST_SMS">
             <intent-filter android:priority="999">
                 <action android:name="android.provider.Telephony.SMS_RECEIVED"/>
@@ -33,7 +33,7 @@
         </receiver>
 
         <service
-            android:name=".SmsLocationReceiver"
+            android:name=".SmsLocationResponceService"
             android:enabled="true"
             android:exported="false"/>
         <service

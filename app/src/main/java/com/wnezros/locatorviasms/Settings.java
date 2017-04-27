@@ -28,6 +28,13 @@ public final class Settings {
     public static void initialize(Context context) {
         PreferenceManager.setDefaultValues(context, R.xml.pref_general, false);
         PreferenceManager.setDefaultValues(context, R.xml.pref_broadcast, false);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        if(prefs.getInt(broadcastInterval, -1) == -1) {
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(broadcastInterval, 10);
+            editor.apply();
+        }
     }
 
     public static boolean getUseGps(SharedPreferences preferences) {

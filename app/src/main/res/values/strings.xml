@@ -66,6 +66,7 @@
     <string name="broadcast_next" formatted="false">Next in %d:%02d</string>
     <string name="broadcast_start">Start</string>
     <string name="broadcast_stop">Stop</string>
+    <string name="broadcast_cant_start">Specify interval and at least one phone before start</string>
     <string name="broadcast_interval">Interval</string>
     <string name="broadcast_interval_summary" formatted="false">Every %s</string>
     <string name="broadcast_comment">Comment</string>

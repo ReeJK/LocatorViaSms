@@ -7,7 +7,7 @@ android {
         applicationId "com.wnezros.locatorviasms"
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 9
+        versionCode 11
         versionName '1.2.0'
         vectorDrawables.useSupportLibrary = true
     }

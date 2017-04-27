@@ -75,6 +75,7 @@
     <string name="broadcast_next" formatted="false">Следующее в %d:%02d</string>
     <string name="broadcast_start">Включить</string>
     <string name="broadcast_stop">Отключить</string>
+    <string name="broadcast_cant_start">Укажите интервал и не менее одного телефона перед включением</string>
     <string name="broadcast_comment">Комментарий</string>
     <string name="broadcast_interval">Интервал</string>
     <string name="broadcast_interval_summary" formatted="false">Каждые %s</string>

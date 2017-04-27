@@ -34,6 +34,8 @@ public final class BroadcastUtils {
     public static void scheduleBroadcasting(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         long interval = Settings.getBroadcastInterval(prefs);
+        interval -= Settings.getGpsTimeout(prefs) / 2;
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(calendar.getTimeInMillis() + interval);
 
@@ -61,15 +63,12 @@ public final class BroadcastUtils {
     public static void showBroadcastNotification(Context context, Calendar nextTime) {
         Resources res = context.getResources();
 
-
-
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
         builder.setColor(res.getColor(R.color.colorAccent));
-        builder.setSmallIcon(R.drawable.ic_launcher);
+        builder.setSmallIcon(R.drawable.ic_notification);
         builder.setContentTitle(res.getString(R.string.app_name));
         builder.setContentText(res.getString(R.string.broadcast_enabled));
-        builder.setSubText(res.getString(R.string.broadcast_next, nextTime.get(Calendar.HOUR), nextTime.get(Calendar.MINUTE)));
+        builder.setSubText(res.getString(R.string.broadcast_next, nextTime.get(Calendar.HOUR_OF_DAY), nextTime.get(Calendar.MINUTE)));
         builder.setLocalOnly(true);
         builder.setOngoing(true);
 

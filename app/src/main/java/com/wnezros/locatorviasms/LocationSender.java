@@ -30,10 +30,18 @@ public abstract class LocationSender {
 
     protected abstract void sendMessage(String message);
 
+    protected void sendNoPermission() {
+        sendMessage(R.string.sms_no_permissions);
+    }
+
+    protected void sendUnableToLocate() {
+        sendMessage(R.string.sms_location_not_found);
+    }
+
     public void requestLocation() {
         if (ContextCompat.checkSelfPermission(_context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
                 ContextCompat.checkSelfPermission(_context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            sendMessage(R.string.sms_no_permissions);
+            sendNoPermission();
             return;
         }
 
@@ -90,6 +98,10 @@ public abstract class LocationSender {
         return true;
     }
 
+    protected int getLastLocationSecondsLimit() {
+        return 60*60;
+    }
+
     protected void requestLastLocation(LocationManager locationManager, SharedPreferences prefs) throws SecurityException {
         Location location = null;
         LocationType type = LocationType.GPS;
@@ -104,16 +116,16 @@ public abstract class LocationSender {
         if (location != null) {
             long ms = location.getTime();
             long secondsDiff = (new Date().getTime() - ms) / 1000;
-            if(secondsDiff < 60*60) {
+            if(secondsDiff < getLastLocationSecondsLimit()) {
                 sendMessage(type, location);
                 return;
             }
         }
         if (!sendCellsMessage(prefs))
-            sendMessage(R.string.sms_location_not_found);
+            sendUnableToLocate();
     }
 
-    private void sendMessage(int resId) {
+    protected void sendMessage(int resId) {
         String message = _context.getString(resId);
         sendMessage(message);
     }

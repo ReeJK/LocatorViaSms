@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -106,6 +107,7 @@ public class SettingsFragment extends BasePreferenceFragment implements Contacts
     public void onResume() {
         super.onResume();
         checkAndToggleStartStop();
+        checkStartAvailable();
         getContext().registerReceiver(_updateReceiver, new IntentFilter(UPDATE_ACTION));
     }
 
@@ -142,6 +144,38 @@ public class SettingsFragment extends BasePreferenceFragment implements Contacts
     @Override
     protected RecyclerView.Adapter onCreateAdapter(PreferenceScreen preferenceScreen) {
         return new PreferenceGroupAdapterEx(preferenceScreen);
+    }
+
+    @Override
+    protected void onPreferenceChanged(Preference preference, Object value) {
+        super.onPreferenceChanged(preference, value);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                checkStartAvailable();
+            }
+        }, 10);
+    }
+
+    private void checkStartAvailable() {
+        if (BroadcastUtils.isBroadcasting(getContext()))
+            return;
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
+        Preference toggle = findPreference("broadcast_toggle");
+        boolean canStart = true;
+        if (Settings.getBroadcastInterval(prefs) <= 0)
+            canStart = false;
+        if (Settings.getBroadcastPhones(prefs).length == 0)
+            canStart = false;
+
+        if (canStart)
+            toggle.setSummary("");
+        else
+            toggle.setSummary(R.string.broadcast_cant_start);
+
+        toggle.setEnabled(canStart);
     }
 
     private void checkAndToggleStartStop() {
@@ -300,5 +334,7 @@ public class SettingsFragment extends BasePreferenceFragment implements Contacts
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
         Settings.setBroadcastPhones(prefs, phones.toArray(new String[0]));
+
+        checkStartAvailable();
     }
 }

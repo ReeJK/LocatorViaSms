@@ -1,10 +1,12 @@
 package com.wnezros.locatorviasms.Broadcast;
 
-import android.app.IntentService;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.telephony.SmsManager;
 import android.util.Log;
 
@@ -13,22 +15,72 @@ import com.wnezros.locatorviasms.Settings;
 
 import java.util.ArrayList;
 
-public class LocationService extends IntentService {
+public class LocationService extends Service {
+    public LocationService() {}
 
-    public LocationService() {
-        super("BroadcastLocationService");
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     @Override
-    protected void onHandleIntent(Intent intent) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("sms-loc", "broadcast");
-        new SmsLocationSender(this).requestLocation();
+
+        SmsLocationSender sender = new SmsLocationSender(this, intent, startId);
+        sender.requestLocation();
+        return START_NOT_STICKY;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        Log.i("sms-loc", "create broadcast");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.i("sms-loc", "destroy broadcast");
+    }
+
+    private void onLocationSent(Intent intent, int startId) {
+        Log.d("sms-loc", "schedule next broadcasting");
+        BroadcastUtils.scheduleBroadcasting(this);
         LocationReceiver.completeWakefulIntent(intent);
+        stopSelf(startId);
     }
 
     static class SmsLocationSender extends LocationSender {
-        public SmsLocationSender(Service service) {
+        private final Intent _intent;
+        private final int _startId;
+
+        public SmsLocationSender(LocationService service, Intent intent, int startId) {
             super(service);
+            _intent = intent;
+            _startId = startId;
+        }
+
+        private void onLocationSent() {
+            ((LocationService)_context).onLocationSent(_intent, _startId);
+        }
+
+        @Override
+        protected int getLastLocationSecondsLimit() {
+            return 60;
+        }
+
+        @Override
+        protected void sendNoPermission() {
+            Log.e("sms-loc", "no permissions");
+            onLocationSent();
+        }
+
+        @Override
+        protected void sendUnableToLocate() {
+            Log.e("sms-loc", "unable to locate");
+            onLocationSent();
         }
 
         @Override
@@ -41,15 +93,25 @@ public class LocationService extends IntentService {
 
             SmsManager sms = SmsManager.getDefault();
             ArrayList<String> messages = sms.divideMessage(message);
+
+            Log.d("sms-loc", String.format("sending %d messages to %d phones", messages.size(), phones.length));
+
+            final String sent = "android.telephony.SmsManager.STATUS_ON_ICC_SENT";
+            PendingIntent piSent = PendingIntent.getBroadcast(_context, 0, new Intent(sent), 0);
+
             for(String phone : phones) {
                 if (messages.size() > 1) {
-                    sms.sendMultipartTextMessage(phone, null, messages, null, null);
+                    ArrayList<PendingIntent> piSents = new ArrayList<>(messages.size());
+                    for (int i = messages.size(); i != 0; i--)
+                        piSents.add(piSent);
+
+                    sms.sendMultipartTextMessage(phone, null, messages, piSents, null);
                 } else {
-                    sms.sendTextMessage(phone, null, message, null, null);
+                    sms.sendTextMessage(phone, null, message, piSent, null);
                 }
             }
 
-            BroadcastUtils.scheduleBroadcasting(_context);
+            onLocationSent();
         }
     }
 }

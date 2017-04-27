@@ -11,7 +11,7 @@ import android.support.v7.preference.PreferenceFragmentCompat;
 import java.util.Arrays;
 
 public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
-    protected static void bindPreferenceSummaryToValue(Preference preference) {
+    protected void bindPreferenceSummaryToValue(Preference preference) {
         preference.setOnPreferenceChangeListener(_bindPreferenceSummaryToValueListener);
 
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(preference.getContext());
@@ -19,26 +19,30 @@ public abstract class BasePreferenceFragment extends PreferenceFragmentCompat {
         _bindPreferenceSummaryToValueListener.onPreferenceChange(preference, value);
     }
 
-    private static Preference.OnPreferenceChangeListener _bindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
+    private Preference.OnPreferenceChangeListener _bindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
-            if(preference instanceof ListPreference) {
-                ListPreference list = (ListPreference) preference;
-                int index = Arrays.asList(list.getEntryValues()).indexOf(value);
-                list.setSummary(list.getEntries()[index]);
-            } else if(preference instanceof ICustomPreference) {
-                ICustomPreference custom = (ICustomPreference) preference;
-                preference.setSummary(custom.valueToString(value));
-            } else {
-                preference.setSummary(String.valueOf(value));
-            }
-
+            onPreferenceChanged(preference, value);
             return true;
         }
     };
 
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
+
+    }
+
+    protected void onPreferenceChanged(Preference preference, Object value) {
+        if(preference instanceof ListPreference) {
+            ListPreference list = (ListPreference) preference;
+            int index = Arrays.asList(list.getEntryValues()).indexOf(value);
+            list.setSummary(list.getEntries()[index]);
+        } else if(preference instanceof ICustomPreference) {
+            ICustomPreference custom = (ICustomPreference) preference;
+            preference.setSummary(custom.valueToString(value));
+        } else {
+            preference.setSummary(String.valueOf(value));
+        }
 
     }
 }

@@ -1,22 +1,21 @@
 package com.wnezros.locatorviasms;
 
-import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.provider.Telephony;
 import android.support.annotation.Nullable;
 import android.telephony.SmsManager;
 import android.util.Log;
 
+import com.wnezros.locatorviasms.Broadcast.LocationReceiver;
+
 import java.util.ArrayList;
 
-public class SmsLocationReceiver extends Service {
+public class SmsLocationResponceService extends Service {
     private int _requests = 0;
 
-    public SmsLocationReceiver() {
+    public SmsLocationResponceService() {
     }
 
     @Nullable
@@ -28,7 +27,7 @@ public class SmsLocationReceiver extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String from = intent.getStringExtra("from");
-        new SmsLocationSender(this, from).requestLocation();
+        new SmsLocationSender(this, intent, from).requestLocation();
         return START_REDELIVER_INTENT;
     }
 
@@ -46,9 +45,11 @@ public class SmsLocationReceiver extends Service {
 
     class SmsLocationSender extends LocationSender {
         private final String _address;
+        private final Intent _intent;
 
-        public SmsLocationSender(Service service, String address) {
+        public SmsLocationSender(Service service, Intent intent, String address) {
             super(service);
+            _intent = intent;
             _address = address;
             _requests++;
         }
@@ -63,11 +64,14 @@ public class SmsLocationReceiver extends Service {
                 sms.sendTextMessage(_address, null, message, null, null);
             }
 
-            PreferenceManager.getDefaultSharedPreferences(SmsLocationReceiver.this).edit().putString("lastAddr", _address).commit();
+            PreferenceManager.getDefaultSharedPreferences(SmsLocationResponceService.this).edit().putString("lastAddr", _address).commit();
+
+            LocationReceiver.completeWakefulIntent(_intent);
 
             _requests--;
-            if(_requests == 0)
+            if(_requests == 0) {
                 stopSelf();
+            }
         }
     }
 }

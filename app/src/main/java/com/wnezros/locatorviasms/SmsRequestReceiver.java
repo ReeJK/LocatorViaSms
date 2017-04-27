@@ -6,10 +6,11 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.provider.Telephony;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.SmsMessage;
 
-public class SmsReceiver extends BroadcastReceiver {
+public class SmsRequestReceiver extends WakefulBroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals(Telephony.Sms.Intents.SMS_RECEIVED_ACTION)) {
@@ -48,9 +49,9 @@ public class SmsReceiver extends BroadcastReceiver {
         String from = sms.getOriginatingAddress();
 
         if (isRequestMessage(context, from, text)) {
-            Intent intent = new Intent(context, SmsLocationReceiver.class);
+            Intent intent = new Intent(context, SmsLocationResponceService.class);
             intent.putExtra("from", from);
-            context.startService(intent);
+            startWakefulService(context, intent);
             return true;
         }
 
