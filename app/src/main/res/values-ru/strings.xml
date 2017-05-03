@@ -70,7 +70,7 @@
 
     <string name="write_battery_level">Писать заряд аккумулятора</string>
     <string name="write_battery_level_summary">Процент заряда аккумулятора</string>
-    <string name="location_battery_level_format" formatted="false">барарея: %d%%</string>
+    <string name="location_battery_level_format" formatted="false">батарея: %d%%</string>
     <string name="broadcast_enabled">Рассылка местоположения включена</string>
     <string name="broadcast_next" formatted="false">Следующее в %d:%02d</string>
     <string name="broadcast_start">Включить</string>

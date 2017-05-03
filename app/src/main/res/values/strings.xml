@@ -30,7 +30,7 @@
     <string name="demo_message">Demo message</string>
     <string name="demo_message_summary">Displays a message that is now can be formed</string>
     <string name="demo_wait_gps">Waiting for GPS...</string>
-    <string name="demo_wait_location">Wating for network location...</string>
+    <string name="demo_wait_location">Waiting for network location...</string>
     <string name="demo_last_location">Receiving last location...</string>
     <string name="via_gps">via GPS</string>
     <string name="via_network">via network</string>
@@ -50,7 +50,7 @@
     <string name="write_accuracy">Write accuracy</string>
     <string name="write_accuracy_summary">Location accuracy in meters</string>
     <string name="write_movement">Write movement</string>
-    <string name="write_movement_summary">Movement direction in degress and speed in meters per second</string>
+    <string name="write_movement_summary">Movement direction in degrees and speed in meters per second</string>
     <string name="write_altitude">Write altitude</string>
     <string name="write_altitude_summary">Height in meters if available</string>
     <string name="write_battery_level">Write battery level</string>

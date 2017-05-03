@@ -25,11 +25,7 @@
     </style>
 
     <style name="AppTheme.BroadcastFragment" parent="PreferenceThemeOverlay.v14.Material">
-        <item name="preferenceFragmentStyle">@style/AppTheme.BroadcastPreference</item>
-    </style>
-
-    <style name="AppTheme.BroadcastPreference" parent="PreferenceFragment">
-        <item name="layout">@layout/fragment_broadcast_preferences</item>
+        <item name="android:layout">@layout/fragment_broadcast_preferences</item>
     </style>
 
     <style name="AppTheme.NoActionBar">

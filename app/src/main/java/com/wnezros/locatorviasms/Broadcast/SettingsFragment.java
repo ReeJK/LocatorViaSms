@@ -22,7 +22,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 import com.wnezros.locatorviasms.BasePreferenceFragment;
 import com.wnezros.locatorviasms.ContactsUtils;
@@ -123,7 +122,10 @@ public class SettingsFragment extends BasePreferenceFragment implements Contacts
 
         ContactsUtils.checkGrantPanel(view, this);
 
-        ImageButton plusButton = (ImageButton) view.findViewById(R.id.plus);
+        View plusButton = view.findViewById(R.id.plus);
+        if (plusButton == null)
+            return view;
+
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
