@@ -60,6 +60,7 @@
     <string name="blacklist">To blacklist</string>
     <string name="whitelist">To whitelist</string>
     <string name="grant_access_to_read_contacts">Grant access to read contacts</string>
+    <string name="choose_contact">Choose contact</string>
 
     <string name="broadcast">Location broadcast</string>
     <string name="broadcast_enabled">Location broadcast is enabled</string>
@@ -72,6 +73,9 @@
     <string name="broadcast_comment">Comment</string>
     <string name="broadcast_phones">Phones</string>
     <string name="phone_dialog_message_broadcast">Enter the phone number to which your location will be sent:</string>
+
+    <string name="send_service_crash">SMS send service has unexpectedly stopped.\nClick here to send report.</string>
+    <string name="show_and_send_crash_report">Show and send</string>
 
     <plurals name="hours">
         <item quantity="one">%1$d hour</item>

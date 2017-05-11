@@ -18,6 +18,7 @@ import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        Serializable exception = getIntent().getSerializableExtra("exception");
+        if (exception instanceof Throwable) {
+            throw new RuntimeException("Service exception", (Throwable)exception);
+        }
+
         requestPermissions();
     }
 

@@ -2,6 +2,7 @@ package com.wnezros.locatorviasms;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
@@ -26,8 +27,13 @@ public class SmsLocationResponceService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String from = intent.getStringExtra("from");
-        new SmsLocationSender(this, intent, from).requestLocation();
+        try {
+            String from = intent.getStringExtra("from");
+            new SmsLocationSender(this, intent, from).requestLocation();
+        } catch (Throwable exception) {
+            ServiceCrashUtils.showCrashNotification(this, exception);
+            stopSelf(startId);
+        }
         return START_REDELIVER_INTENT;
     }
 

@@ -11,6 +11,7 @@ import android.telephony.SmsManager;
 import android.util.Log;
 
 import com.wnezros.locatorviasms.LocationSender;
+import com.wnezros.locatorviasms.ServiceCrashUtils;
 import com.wnezros.locatorviasms.Settings;
 
 import java.util.ArrayList;
@@ -27,9 +28,13 @@ public class LocationService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i("sms-loc", "broadcast");
-
-        SmsLocationSender sender = new SmsLocationSender(this, intent, startId);
-        sender.requestLocation();
+        try {
+            SmsLocationSender sender = new SmsLocationSender(this, intent, startId);
+            sender.requestLocation();
+        } catch (Throwable exception) {
+            ServiceCrashUtils.showCrashNotification(this, exception);
+            onLocationSent(intent, startId);
+        }
         return START_NOT_STICKY;
     }
 

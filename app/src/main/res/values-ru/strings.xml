@@ -81,4 +81,7 @@
     <string name="broadcast_interval_summary" formatted="false">Каждые %s</string>
     <string name="broadcast_phones">Телефоны</string>
     <string name="phone_dialog_message_broadcast">Введите номер на который будет отправлено ваше местоположение:</string>
+    <string name="choose_contact">Выберите контакт</string>
+    <string name="show_and_send_crash_report">Показать и отправить</string>
+    <string name="send_service_crash">Сервис отправки СМС неожиданно остановился.\nНажмите здесь, чтобы отправить репорт.</string>
 </resources>
