@@ -11,7 +11,8 @@ import android.support.v7.app.NotificationCompat;
 import static android.content.Context.NOTIFICATION_SERVICE;
 
 public final class ServiceCrashUtils {
-    public static final int NOTIFICATION_ID = 666;
+    public static final int CRASH_NOTIFICATION_ID = 666;
+    public static final int NO_PERMISSION_NOTIFICATION_ID = 555;
 
     public static void showCrashNotification(Context context, Throwable exception) {
         Resources res = context.getResources();
@@ -36,6 +37,27 @@ public final class ServiceCrashUtils {
         notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
-        notificationManager.notify(NOTIFICATION_ID, notification);
+        notificationManager.notify(CRASH_NOTIFICATION_ID, notification);
+    }
+
+    public static void showNoPermissionNotification(Context context, SecurityException exception) {
+        Resources res = context.getResources();
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+        builder.setColor(0xFFFF0000);
+        builder.setSmallIcon(R.drawable.ic_notification);
+        builder.setContentTitle(res.getString(R.string.app_name));
+        builder.setContentText(res.getString(R.string.notification_no_permission));
+        builder.setStyle(new NotificationCompat.BigTextStyle().bigText(res.getString(R.string.notification_no_permission)));
+        builder.setLocalOnly(true);
+
+        Intent crashIntent = new Intent(context, MainActivity.class);
+        crashIntent.setFlags(Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+
+        Notification notification = builder.build();
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(NO_PERMISSION_NOTIFICATION_ID, notification);
     }
 }

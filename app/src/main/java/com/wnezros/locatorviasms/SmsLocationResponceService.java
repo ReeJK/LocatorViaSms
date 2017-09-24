@@ -62,12 +62,16 @@ public class SmsLocationResponceService extends Service {
 
         @Override
         protected void sendMessage (String message){
-            SmsManager sms = SmsManager.getDefault();
-            ArrayList<String> messages = sms.divideMessage(message);
-            if(messages.size() > 1) {
-                sms.sendMultipartTextMessage(_address, null, messages, null, null);
-            } else {
-                sms.sendTextMessage(_address, null, message, null, null);
+            try {
+                SmsManager sms = SmsManager.getDefault();
+                ArrayList<String> messages = sms.divideMessage(message);
+                if (messages.size() > 1) {
+                    sms.sendMultipartTextMessage(_address, null, messages, null, null);
+                } else {
+                    sms.sendTextMessage(_address, null, message, null, null);
+                }
+            } catch (SecurityException ex) {
+                ServiceCrashUtils.showNoPermissionNotification(_context, ex);
             }
 
             PreferenceManager.getDefaultSharedPreferences(SmsLocationResponceService.this).edit().putString("lastAddr", _address).commit();

@@ -62,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         permissionsToRequest.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         permissionsToRequest.add(Manifest.permission.RECEIVE_SMS);
         permissionsToRequest.add(Manifest.permission.SEND_SMS);
+        permissionsToRequest.add(Manifest.permission.READ_PHONE_STATE);
 
         for(int i = permissionsToRequest.size() - 1; i >= 0; i--) {
             if (ContextCompat.checkSelfPermission(this, permissionsToRequest.get(i)) == PackageManager.PERMISSION_GRANTED)

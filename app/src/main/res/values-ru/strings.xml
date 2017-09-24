@@ -84,4 +84,5 @@
     <string name="choose_contact">Выберите контакт</string>
     <string name="show_and_send_crash_report">Показать и отправить</string>
     <string name="send_service_crash">Сервис отправки СМС неожиданно остановился.\nНажмите здесь, чтобы отправить репорт.</string>
+    <string name="notification_no_permission">Неудаётся отправить сообщение потому что разрешие на отправку сообщений не предоставлено</string>
 </resources>

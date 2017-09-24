@@ -86,5 +86,6 @@
         <item quantity="one">%1$d minute</item>
         <item quantity="other">%1$d minutes</item>
     </plurals>
+    <string name="notification_no_permission">Can\'t send SMS because permission to send sms is not granted</string>
 
 </resources>
